@@ -11,7 +11,7 @@ services:
     image: ghcr.io/yonatanlop/candidatatunja:latest
     restart: unless-stopped
     ports:
-      - '3000:3000'
+      - '80:3000'
     environment:
       - DATABASE_URL=postgres://tunja:${DB_PASSWORD:?define DB_PASSWORD}@db:5432/tunja
       - PAYLOAD_SECRET=${PAYLOAD_SECRET:?define PAYLOAD_SECRET}

@@ -1,7 +1,7 @@
-name: Construir y publicar imagen Docker
+name: Construir, publicar y desplegar
 
-# Al hacer push a main/master se construye la imagen y se publica en GHCR
-# (GitHub Container Registry). Luego la VM de Oracle solo hace `docker pull`.
+# En cada push a main: 1) construye la imagen y la publica en GHCR,
+# 2) entra por SSH a la VM de Oracle y actualiza el despliegue.
 on:
   push:
     branches: [main, master]
@@ -50,3 +50,29 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Desplegar en la VM de Oracle (SSH)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.ORACLE_HOST }}
+          username: ${{ secrets.ORACLE_USER }}
+          key: ${{ secrets.ORACLE_SSH_KEY }}
+          script: |
+            set -e
+            mkdir -p ~/candidatatunja && cd ~/candidatatunja
+            curl -fsSL -o docker-compose.oracle.yml https://raw.githubusercontent.com/${{ github.repository }}/main/docker-compose.oracle.yml
+            {
+              echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}"
+              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
+              echo "NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}"
+              echo "PAYLOAD_DB_PUSH=${{ secrets.PAYLOAD_DB_PUSH }}"
+            } > .env
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose -f docker-compose.oracle.yml pull
+            docker compose -f docker-compose.oracle.yml up -d
+            docker logout ghcr.io
+            docker image prune -f

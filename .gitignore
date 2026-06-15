@@ -23,6 +23,14 @@
 .DS_Store
 *.pem
 
+# Llaves SSH / credenciales (NUNCA subir al repo)
+*.key
+*.ppk
+*.pub
+ssh-key-*
+id_rsa*
+id_ed25519*
+
 # debug
 npm-debug.log*
 yarn-debug.log*
