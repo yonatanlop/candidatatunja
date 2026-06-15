@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+
+/* Paleta oficial — Manual de marca MIRA 2023. */
+@theme {
+  --color-marca: #003e8e; /* Azul corporativo (Pantone 293C / #003e8e) */
+  --color-marca-oscuro: #002a63; /* azul más oscuro para hover (derivado) */
+  --color-marca-claro: #e7eef8; /* azul muy claro para fondos (derivado) */
+  --color-acento: #f8b018; /* Amarillo/dorado de marca (logo MIRA) */
+  --color-acento-oscuro: #d99708; /* dorado para hover (derivado) */
+  --color-gris: #cbccd1; /* Gris complementario (#cbccd1) */
+  --color-tinta: #1b2540; /* texto principal (azul muy oscuro) */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--color-tinta);
+  background: #ffffff;
+}
+
+/* Estilos base para el contenido enriquecido (richText) */
+.prosa h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.75rem;
+}
+.prosa h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1.25rem 0 0.5rem;
+}
+.prosa p {
+  margin: 0.75rem 0;
+  line-height: 1.7;
+}
+.prosa ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+.prosa ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+.prosa a {
+  color: var(--color-marca);
+  text-decoration: underline;
+}
+.prosa blockquote {
+  border-left: 4px solid var(--color-marca);
+  padding-left: 1rem;
+  color: #4b5563;
+  font-style: italic;
+  margin: 1rem 0;
+}

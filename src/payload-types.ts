@@ -67,8 +67,12 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    propuestas: Propuesta;
+    noticias: Noticia;
+    entrevistas: Entrevista;
+    contactos: Contacto;
     media: Media;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,19 +80,29 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    propuestas: PropuestasSelect<false> | PropuestasSelect<true>;
+    noticias: NoticiasSelect<false> | NoticiasSelect<true>;
+    entrevistas: EntrevistasSelect<false> | EntrevistasSelect<true>;
+    contactos: ContactosSelect<false> | ContactosSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'hoja-de-vida': HojaDeVida;
+    'ajustes-sitio': AjustesSitio;
+  };
+  globalsSelect: {
+    'hoja-de-vida': HojaDeVidaSelect<false> | HojaDeVidaSelect<true>;
+    'ajustes-sitio': AjustesSitioSelect<false> | AjustesSitioSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -119,10 +133,185 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "propuestas".
+ */
+export interface Propuesta {
+  id: number;
+  titulo: string;
+  /**
+   * Se genera automáticamente desde el título si se deja vacío.
+   */
+  slug?: string | null;
+  eje: 'educacion' | 'seguridad' | 'salud' | 'empleo' | 'movilidad' | 'ambiente' | 'cultura' | 'gobierno' | 'otro';
+  /**
+   * Las propuestas se muestran de menor a mayor número.
+   */
+  orden?: number | null;
+  /**
+   * Ej.: 📚, 🚓, 🌳
+   */
+  icono?: string | null;
+  /**
+   * Una o dos frases que se muestran en el listado.
+   */
+  resumen: string;
+  imagen?: (number | null) | Media;
+  contenido?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Describe la imagen (accesibilidad y SEO).
+   */
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "noticias".
+ */
+export interface Noticia {
+  id: number;
+  titulo: string;
+  /**
+   * Se genera automáticamente desde el título si se deja vacío.
+   */
+  slug?: string | null;
+  fecha: string;
+  portada?: (number | null) | Media;
+  /**
+   * Texto breve que aparece en el listado y al compartir.
+   */
+  resumen: string;
+  contenido: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "entrevistas".
+ */
+export interface Entrevista {
+  id: number;
+  titulo: string;
+  /**
+   * Se genera automáticamente desde el título si se deja vacío.
+   */
+  slug?: string | null;
+  /**
+   * "Realizada" muestra el video; "Próxima" se muestra en la agenda.
+   */
+  estado: 'realizada' | 'proxima';
+  /**
+   * Ej.: Caracol Radio, Noticias RCN, Canal local...
+   */
+  medio: string;
+  fecha: string;
+  /**
+   * Pega el enlace de YouTube de la entrevista realizada. Se incrusta automáticamente.
+   */
+  urlVideo?: string | null;
+  /**
+   * Para entrevistas próximas: dónde se podrá ver en vivo.
+   */
+  enlaceTransmision?: string | null;
+  descripcion?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactos".
+ */
+export interface Contacto {
+  id: number;
+  nombre: string;
+  email: string;
+  telefono?: string | null;
+  esVoluntario?: boolean | null;
+  mensaje?: string | null;
+  atendido?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
+  nombre?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,29 +333,10 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +353,36 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: string | User;
+        relationTo: 'propuestas';
+        value: number | Propuesta;
+      } | null)
+    | ({
+        relationTo: 'noticias';
+        value: number | Noticia;
+      } | null)
+    | ({
+        relationTo: 'entrevistas';
+        value: number | Entrevista;
+      } | null)
+    | ({
+        relationTo: 'contactos';
+        value: number | Contacto;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +392,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +415,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -237,25 +423,64 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "propuestas_select".
  */
-export interface UsersSelect<T extends boolean = true> {
+export interface PropuestasSelect<T extends boolean = true> {
+  titulo?: T;
+  slug?: T;
+  eje?: T;
+  orden?: T;
+  icono?: T;
+  resumen?: T;
+  imagen?: T;
+  contenido?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "noticias_select".
+ */
+export interface NoticiasSelect<T extends boolean = true> {
+  titulo?: T;
+  slug?: T;
+  fecha?: T;
+  portada?: T;
+  resumen?: T;
+  contenido?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "entrevistas_select".
+ */
+export interface EntrevistasSelect<T extends boolean = true> {
+  titulo?: T;
+  slug?: T;
+  estado?: T;
+  medio?: T;
+  fecha?: T;
+  urlVideo?: T;
+  enlaceTransmision?: T;
+  descripcion?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactos_select".
+ */
+export interface ContactosSelect<T extends boolean = true> {
+  nombre?: T;
   email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+  telefono?: T;
+  esVoluntario?: T;
+  mensaje?: T;
+  atendido?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -274,6 +499,63 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  nombre?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -314,6 +596,147 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hoja-de-vida".
+ */
+export interface HojaDeVida {
+  id: number;
+  nombreCompleto: string;
+  cargoAspirado?: string | null;
+  foto?: (number | null) | Media;
+  biografia?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  formacion?:
+    | {
+        titulo: string;
+        institucion?: string | null;
+        anio?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  experiencia?:
+    | {
+        cargo: string;
+        organizacion?: string | null;
+        periodo?: string | null;
+        descripcion?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  logros?:
+    | {
+        texto: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ajustes-sitio".
+ */
+export interface AjustesSitio {
+  id: number;
+  nombreSitio: string;
+  lema?: string | null;
+  logo?: (number | null) | Media;
+  redes?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    x?: string | null;
+    tiktok?: string | null;
+  };
+  contacto?: {
+    email?: string | null;
+    telefono?: string | null;
+    direccion?: string | null;
+  };
+  /**
+   * Ej.: Comité de campaña — Tunja 2027
+   */
+  textoPie?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hoja-de-vida_select".
+ */
+export interface HojaDeVidaSelect<T extends boolean = true> {
+  nombreCompleto?: T;
+  cargoAspirado?: T;
+  foto?: T;
+  biografia?: T;
+  formacion?:
+    | T
+    | {
+        titulo?: T;
+        institucion?: T;
+        anio?: T;
+        id?: T;
+      };
+  experiencia?:
+    | T
+    | {
+        cargo?: T;
+        organizacion?: T;
+        periodo?: T;
+        descripcion?: T;
+        id?: T;
+      };
+  logros?:
+    | T
+    | {
+        texto?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ajustes-sitio_select".
+ */
+export interface AjustesSitioSelect<T extends boolean = true> {
+  nombreSitio?: T;
+  lema?: T;
+  logo?: T;
+  redes?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        x?: T;
+        tiktok?: T;
+      };
+  contacto?:
+    | T
+    | {
+        email?: T;
+        telefono?: T;
+        direccion?: T;
+      };
+  textoPie?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

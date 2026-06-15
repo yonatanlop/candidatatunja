@@ -48,3 +48,11 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Recursos / documentos fuente y artefactos temporales (no van al repo)
+*.pdf
+*.docx
+/FotoCandidata.jpeg
+/pdf-img/
+/bp-img/
+shot-*.png

@@ -1,0 +1,108 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { SocialLinks, type Redes } from './SocialLinks'
+
+const enlaces = [
+  { href: '/', texto: 'Inicio' },
+  { href: '/hoja-de-vida', texto: 'Hoja de vida' },
+  { href: '/propuestas', texto: 'Propuestas' },
+  { href: '/noticias', texto: 'Noticias' },
+  { href: '/entrevistas', texto: 'Entrevistas' },
+  { href: '/contacto', texto: 'Contacto' },
+]
+
+export function Header({
+  nombreSitio,
+  logoUrl,
+  redes,
+}: {
+  nombreSitio: string
+  logoUrl?: string | null
+  redes?: Redes | null
+}) {
+  const [abierto, setAbierto] = useState(false)
+  const pathname = usePathname()
+
+  const esActivo = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href)
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link href="/" className="flex items-center gap-2" onClick={() => setAbierto(false)}>
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logoUrl} alt={nombreSitio} className="h-10 w-auto" />
+          ) : (
+            <span className="text-lg font-extrabold text-[var(--color-marca)]">
+              {nombreSitio}
+            </span>
+          )}
+        </Link>
+
+        {/* Navegación de escritorio */}
+        <nav className="hidden items-center gap-6 md:flex">
+          {enlaces.map((e) => (
+            <Link
+              key={e.href}
+              href={e.href}
+              className={`text-sm font-medium transition-colors hover:text-[var(--color-marca)] ${
+                esActivo(e.href) ? 'text-[var(--color-marca)]' : 'text-gray-700'
+              }`}
+            >
+              {e.texto}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="hidden md:block">
+          <SocialLinks redes={redes} className="text-[var(--color-marca)]" />
+        </div>
+
+        {/* Botón móvil */}
+        <button
+          type="button"
+          className="md:hidden"
+          aria-label="Abrir menú"
+          aria-expanded={abierto}
+          onClick={() => setAbierto((v) => !v)}
+        >
+          <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            {abierto ? (
+              <path strokeWidth={2} strokeLinecap="round" d="M6 6l12 12M6 18L18 6" />
+            ) : (
+              <path strokeWidth={2} strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            )}
+          </svg>
+        </button>
+      </div>
+
+      {/* Menú móvil */}
+      {abierto && (
+        <nav className="border-t border-gray-100 bg-white px-4 py-3 md:hidden">
+          <ul className="flex flex-col gap-1">
+            {enlaces.map((e) => (
+              <li key={e.href}>
+                <Link
+                  href={e.href}
+                  onClick={() => setAbierto(false)}
+                  className={`block rounded px-2 py-2 text-base font-medium ${
+                    esActivo(e.href)
+                      ? 'bg-[var(--color-marca-claro)] text-[var(--color-marca)]'
+                      : 'text-gray-700'
+                  }`}
+                >
+                  {e.texto}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <SocialLinks redes={redes} className="mt-3 text-[var(--color-marca)]" />
+        </nav>
+      )}
+    </header>
+  )
+}

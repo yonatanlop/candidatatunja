@@ -1,0 +1,43 @@
+# Entorno de PRODUCCIÓN (p. ej. VM en Oracle Cloud Infrastructure).
+# Construye la imagen de la app y la sirve junto a PostgreSQL.
+# Uso: docker compose -f docker-compose.prod.yml up -d --build
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      # 3001 en el host (3000 lo usa otra app local).
+      - '3001:3000'
+    environment:
+      - DATABASE_URL=postgres://tunja:${DB_PASSWORD:?define DB_PASSWORD}@db:5432/tunja
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:?define PAYLOAD_SECRET}
+      - PAYLOAD_DB_PUSH=${PAYLOAD_DB_PUSH:-false}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      - NODE_ENV=production
+    volumes:
+      # Carpeta de imágenes subidas (persistente). En la VM de Oracle puede ser
+      # un volumen nombrado; aquí se enlaza a ./media para reutilizar las ya cargadas.
+      - ./media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=tunja
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?define DB_PASSWORD}
+      - POSTGRES_DB=tunja
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U tunja -d tunja']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

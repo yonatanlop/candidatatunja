@@ -1,67 +1,150 @@
-# Payload Blank Template
+# Sitio web de campaña — Candidata a la Alcaldía
 
-This template comes configured with the bare minimum to get started on anything you need.
+Sitio oficial construido con **Next.js 16 + Payload CMS 3 + PostgreSQL**, pensado para
+que el equipo de campaña administre el contenido desde un panel en español, y preparado
+para desplegarse en contenedores (Docker) en **Oracle Cloud Infrastructure (OCI)**.
 
-## Quick start
+## Secciones
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+- **Inicio** — presentación, propuestas destacadas, últimas noticias y próximas entrevistas.
+- **Hoja de vida** — biografía, formación, experiencia y logros.
+- **Propuestas** — listado por ejes y página de detalle.
+- **Noticias** — listado paginado y artículo (con borrador/publicado).
+- **Entrevistas** — realizadas (video de YouTube incrustado) y próximas (agenda).
+- **Contacto** — formulario de contacto/voluntariado que guarda los registros en el panel.
+- **Panel de administración** — en `/admin`.
 
-## Quick Start - local setup
+## Stack
 
-To spin up this template locally, follow these steps:
+| Capa | Tecnología |
+|------|-----------|
+| Web + API | Next.js 16 (App Router), React 19, TypeScript |
+| CMS / panel | Payload CMS 3 (embebido en Next.js) |
+| Base de datos | PostgreSQL 16 |
+| Estilos | Tailwind CSS 4 |
+| Contenedores | Docker / Docker Compose |
 
-### Clone
+---
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+## Desarrollo local
 
-### Development
+### Requisitos
+- Node.js 20+ y npm
+- Docker Desktop
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+### Puesta en marcha
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+```bash
+# 1. Variables de entorno
+cp .env.example .env        # ajusta PAYLOAD_SECRET si quieres
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+# 2. Base de datos (PostgreSQL en Docker, publicada en el puerto 5434 del host)
+docker compose up -d db
 
-#### Docker (Optional)
+# 3. Dependencias
+npm install
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+# 4. Datos de ejemplo (crea el usuario admin y contenido de muestra)
+npm run seed
 
-To do so, follow these steps:
+# 5. Servidor de desarrollo (http://localhost:3001)
+npm run dev
+```
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+> El puerto del host de PostgreSQL es **5434** (configurado en `docker-compose.yml`) para
+> no chocar con otros PostgreSQL instalados en la máquina. El puerto web de desarrollo es
+> **3001** (`npm run dev`).
 
-## How it works
+- Sitio: <http://localhost:3001>
+- Panel: <http://localhost:3001/admin>
+- Usuario de ejemplo (creado por `npm run seed`): `admin@campana.local` / `Campana2027!`
+  **Cámbialo antes de publicar.**
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+### Opción todo-en-Docker (app + db)
 
-### Collections
+```bash
+docker compose up        # levanta la app y la base de datos juntas
+```
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+### Comandos útiles
 
-- #### Users (Authentication)
+```bash
+npm run dev               # desarrollo (puerto 3001)
+npm run build             # compilación de producción
+npm run start             # ejecutar la build
+npm run lint              # ESLint
+npm run seed              # cargar datos de ejemplo
+npm run generate:types    # regenerar tipos de Payload tras cambiar colecciones
+npm run generate:importmap # regenerar el import map del panel
+```
 
-  Users are auth-enabled collections that have access to the admin panel.
+---
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+## Modelo de contenido (panel)
 
-- #### Media
+- **Propuestas**, **Noticias**, **Entrevistas**, **Mensajes/Voluntarios** (colecciones).
+- **Hoja de vida** y **Ajustes del sitio** (globales: nombre, lema, logo, redes, contacto).
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+El slug de propuestas y noticias se genera automáticamente desde el título.
 
-### Docker
+---
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+## Despliegue en Oracle Cloud Infrastructure (OCI)
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+Pensado para una VM (p. ej. la capa **Always Free** con Ampere ARM) con Docker.
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+1. **Crear la instancia** (VM) en OCI con Ubuntu, abrir los puertos 80/443 en la
+   *security list* / *NSG*, e instalar Docker y el plugin Compose.
 
-## Questions
+2. **Clonar el proyecto** en la VM y crear un archivo `.env` con valores de producción:
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+   ```env
+   PAYLOAD_SECRET=<cadena-larga-aleatoria>
+   DB_PASSWORD=<contraseña-fuerte>
+   NEXT_PUBLIC_SITE_URL=https://tudominio.co
+   # Solo en el PRIMER despliegue, para crear el esquema sin migraciones:
+   PAYLOAD_DB_PUSH=true
+   ```
+
+3. **Levantar en producción** (build de imagen + PostgreSQL):
+
+   ```bash
+   docker compose -f docker-compose.prod.yml up -d --build
+   ```
+
+   La app queda en el puerto `3000` del contenedor. Tras el primer arranque exitoso,
+   pon `PAYLOAD_DB_PUSH=false` y reinicia.
+
+4. **Crear el primer usuario administrador**: entra a `https://tudominio.co/admin`
+   (la primera visita permite registrar el usuario inicial).
+
+5. **HTTPS y dominio**: coloca un proxy inverso (Caddy o Nginx) delante del contenedor
+   para terminar TLS y servir en 80/443. Caddy obtiene certificados automáticamente.
+
+6. **Persistencia**: las imágenes subidas viven en el volumen `media` y la base de datos
+   en el volumen `pgdata` (ver `docker-compose.prod.yml`). Inclúyelos en tus respaldos.
+
+> **Migraciones (recomendado para producción):** en lugar de `PAYLOAD_DB_PUSH`, genera
+> migraciones con `npm run payload migrate:create` durante el desarrollo y aplícalas con
+> `npm run payload migrate` en el arranque de producción.
+
+### Evolución sugerida
+- Mover el almacenamiento de imágenes a **OCI Object Storage** (compatible con S3).
+- Configurar un adaptador de email (SMTP) para notificar los envíos del formulario.
+
+---
+
+## Estructura del proyecto
+
+```
+src/
+├── app/(frontend)/      # páginas públicas del sitio
+├── app/(payload)/       # panel de administración y API (generado por Payload)
+├── collections/         # Propuestas, Noticias, Entrevistas, Contactos, Media, Users
+├── globals/             # HojaDeVida, AjustesSitio
+├── components/          # Header, Footer, tarjetas, YouTubeEmbed, etc.
+├── lib/                 # utilidades (cliente Payload, formato, media)
+├── fields/              # campo slug reutilizable
+├── seed.ts              # datos de ejemplo
+└── payload.config.ts    # configuración central de Payload
+```
