@@ -11,7 +11,9 @@ services:
     image: ghcr.io/yonatanlop/candidatatunja:latest
     restart: unless-stopped
     ports:
-      - '80:3000'
+      # Caddy (en el host, puertos 80/443) hace reverse_proxy a este puerto interno.
+      # Solo escucha en localhost para no exponer el contenedor directamente.
+      - '127.0.0.1:8081:3000'
     environment:
       - DATABASE_URL=postgres://tunja:${DB_PASSWORD:?define DB_PASSWORD}@db:5432/tunja
       - PAYLOAD_SECRET=${PAYLOAD_SECRET:?define PAYLOAD_SECRET}

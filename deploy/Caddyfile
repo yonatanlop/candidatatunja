@@ -1,0 +1,19 @@
+# Configuración de Caddy en la VM de Oracle (/etc/caddy/Caddyfile).
+# Caddy ocupa los puertos 80/443 del host y hace reverse_proxy a los contenedores.
+
+# --- Plataforma de inglés (se conserva tal cual estaba) ---
+speakupone.duckdns.org {
+	reverse_proxy localhost:8080
+}
+
+# --- Campaña: accesible por IP en HTTP mientras se configura el dominio ---
+http://137.131.216.216 {
+	reverse_proxy localhost:8081
+}
+
+# --- Dominio definitivo de la campaña (HTTPS automático) ---
+# DESCOMENTAR cuando recuperemosatunja.com tenga un registro DNS A apuntando
+# a 137.131.216.216. Caddy emitirá el certificado TLS automáticamente.
+# recuperemosatunja.com, www.recuperemosatunja.com {
+# 	reverse_proxy localhost:8081
+# }
