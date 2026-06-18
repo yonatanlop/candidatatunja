@@ -12,6 +12,9 @@ import { Propuestas } from './collections/Propuestas'
 import { Noticias } from './collections/Noticias'
 import { Entrevistas } from './collections/Entrevistas'
 import { Contactos } from './collections/Contactos'
+import { Sugerencias } from './collections/Sugerencias'
+import { TestigosElectorales } from './collections/TestigosElectorales'
+import { Reuniones } from './collections/Reuniones'
 import { HojaDeVida } from './globals/HojaDeVida'
 import { AjustesSitio } from './globals/AjustesSitio'
 
@@ -28,7 +31,17 @@ export default buildConfig({
       titleSuffix: '— Campaña',
     },
   },
-  collections: [Propuestas, Noticias, Entrevistas, Contactos, Media, Users],
+  collections: [
+    Propuestas,
+    Noticias,
+    Entrevistas,
+    Contactos,
+    Sugerencias,
+    TestigosElectorales,
+    Reuniones,
+    Media,
+    Users,
+  ],
   globals: [HojaDeVida, AjustesSitio],
   editor: lexicalEditor(),
   i18n: {

@@ -71,6 +71,9 @@ export interface Config {
     noticias: Noticia;
     entrevistas: Entrevista;
     contactos: Contacto;
+    sugerencias: Sugerencia;
+    'testigos-electorales': TestigosElectorale;
+    reuniones: Reunione;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -84,6 +87,9 @@ export interface Config {
     noticias: NoticiasSelect<false> | NoticiasSelect<true>;
     entrevistas: EntrevistasSelect<false> | EntrevistasSelect<true>;
     contactos: ContactosSelect<false> | ContactosSelect<true>;
+    sugerencias: SugerenciasSelect<false> | SugerenciasSelect<true>;
+    'testigos-electorales': TestigosElectoralesSelect<false> | TestigosElectoralesSelect<true>;
+    reuniones: ReunionesSelect<false> | ReunionesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -307,6 +313,48 @@ export interface Contacto {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sugerencias".
+ */
+export interface Sugerencia {
+  id: number;
+  sugerencia: string;
+  nombre?: string | null;
+  email?: string | null;
+  telefono?: string | null;
+  atendido?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testigos-electorales".
+ */
+export interface TestigosElectorale {
+  id: number;
+  nombreCompleto: string;
+  tipoDocumento: 'CC' | 'CE' | 'TI' | 'PA';
+  numeroDocumento: string;
+  celular: string;
+  atendido?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reuniones".
+ */
+export interface Reunione {
+  id: number;
+  nombre: string;
+  lugar: string;
+  fechaHora: string;
+  estado?: ('solicitada' | 'confirmada' | 'rechazada') | null;
+  nota?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -370,6 +418,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contactos';
         value: number | Contacto;
+      } | null)
+    | ({
+        relationTo: 'sugerencias';
+        value: number | Sugerencia;
+      } | null)
+    | ({
+        relationTo: 'testigos-electorales';
+        value: number | TestigosElectorale;
+      } | null)
+    | ({
+        relationTo: 'reuniones';
+        value: number | Reunione;
       } | null)
     | ({
         relationTo: 'media';
@@ -479,6 +539,45 @@ export interface ContactosSelect<T extends boolean = true> {
   esVoluntario?: T;
   mensaje?: T;
   atendido?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sugerencias_select".
+ */
+export interface SugerenciasSelect<T extends boolean = true> {
+  sugerencia?: T;
+  nombre?: T;
+  email?: T;
+  telefono?: T;
+  atendido?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testigos-electorales_select".
+ */
+export interface TestigosElectoralesSelect<T extends boolean = true> {
+  nombreCompleto?: T;
+  tipoDocumento?: T;
+  numeroDocumento?: T;
+  celular?: T;
+  atendido?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reuniones_select".
+ */
+export interface ReunionesSelect<T extends boolean = true> {
+  nombre?: T;
+  lugar?: T;
+  fechaHora?: T;
+  estado?: T;
+  nota?: T;
   updatedAt?: T;
   createdAt?: T;
 }

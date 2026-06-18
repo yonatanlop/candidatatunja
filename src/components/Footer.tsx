@@ -29,6 +29,7 @@ export function Footer({
             <li><Link href="/propuestas" className="hover:text-white">Propuestas</Link></li>
             <li><Link href="/noticias" className="hover:text-white">Noticias</Link></li>
             <li><Link href="/entrevistas" className="hover:text-white">Entrevistas</Link></li>
+            <li><Link href="/participa" className="hover:text-white">Participa</Link></li>
             <li><Link href="/contacto" className="hover:text-white">Contacto</Link></li>
           </ul>
         </nav>

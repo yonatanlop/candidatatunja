@@ -11,7 +11,7 @@ const enlaces = [
   { href: '/propuestas', texto: 'Propuestas' },
   { href: '/noticias', texto: 'Noticias' },
   { href: '/entrevistas', texto: 'Entrevistas' },
-  { href: '/contacto', texto: 'Contacto' },
+  { href: '/participa', texto: 'Participa' },
 ]
 
 export function Header({
