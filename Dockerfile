@@ -20,6 +20,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # PAYLOAD_SECRET y DATABASE_URL se necesitan en build sólo de forma nominal;
 # valores reales se inyectan en tiempo de ejecución.
 ENV PAYLOAD_SECRET=build-time-placeholder
+# Las variables NEXT_PUBLIC_* se incrustan al compilar, así que la URL del sitio
+# debe llegar como build-arg (el .env de runtime no basta para estas).
+ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN npm run build
 
 # 3) Ejecución

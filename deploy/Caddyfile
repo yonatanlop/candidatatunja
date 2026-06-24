@@ -11,9 +11,8 @@ http://137.131.216.216 {
 	reverse_proxy localhost:8081
 }
 
-# --- Dominio definitivo de la campaña (HTTPS automático) ---
-# DESCOMENTAR cuando recuperemosatunja.com tenga un registro DNS A apuntando
-# a 137.131.216.216. Caddy emitirá el certificado TLS automáticamente.
-# recuperemosatunja.com, www.recuperemosatunja.com {
-# 	reverse_proxy localhost:8081
-# }
+# --- Dominio definitivo de la campaña (HTTPS automático con Let's Encrypt) ---
+# Activo desde 2026-06-24. Caddy emite y renueva el certificado TLS solo.
+recuperemosatunja.com, www.recuperemosatunja.com {
+	reverse_proxy localhost:8081
+}
