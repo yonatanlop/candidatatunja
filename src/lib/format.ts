@@ -40,13 +40,6 @@ export const youtubeEmbedUrl = (url: string | null | undefined): string | null =
   return null
 }
 
-/** Extrae el ID de un video de TikTok y devuelve la URL para incrustar. */
-const tiktokEmbedUrl = (url: string): string | null => {
-  const m = url.match(/tiktok\.com\/@[\w.-]+\/video\/(\d+)/)
-  if (m) return `https://www.tiktok.com/embed/v2/${m[1]}`
-  return null
-}
-
 /** Devuelve la URL de embed según la plataforma, o null si no se puede incrustar. */
 export const videoEmbedUrl = (
   url: string | null | undefined,
@@ -58,9 +51,22 @@ export const videoEmbedUrl = (
       return youtubeEmbedUrl(url)
     case 'facebook':
       return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0&width=560`
-    case 'tiktok':
-      return tiktokEmbedUrl(url)
     default:
       return null
+  }
+}
+
+/** Consulta la API pública de oEmbed de TikTok y devuelve la URL de la miniatura. */
+export const fetchTikTokThumbnail = async (url: string): Promise<string | null> => {
+  try {
+    const res = await fetch(
+      `https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`,
+      { next: { revalidate: 3600 } },
+    )
+    if (!res.ok) return null
+    const data = await res.json()
+    return (data.thumbnail_url as string) ?? null
+  } catch {
+    return null
   }
 }
