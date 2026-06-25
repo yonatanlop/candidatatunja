@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getClient } from '@/lib/payload'
 import { PageHeader } from '@/components/PageHeader'
-import { YouTubeEmbed } from '@/components/YouTubeEmbed'
+import { VideoEmbed } from '@/components/VideoEmbed'
 import { formatearFecha, formatearFechaHora } from '@/lib/format'
 
 export const dynamic = 'force-dynamic'
@@ -82,7 +82,7 @@ export default async function EntrevistasPage() {
               {realizadas.docs.map((e) => (
                 <article key={e.id}>
                   {e.urlVideo ? (
-                    <YouTubeEmbed url={e.urlVideo} titulo={e.titulo} />
+                    <VideoEmbed url={e.urlVideo} plataforma={e.plataforma} titulo={e.titulo} />
                   ) : (
                     <div className="flex aspect-video items-center justify-center rounded-lg bg-gray-100 text-gray-400">
                       Video no disponible

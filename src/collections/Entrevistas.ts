@@ -54,12 +54,29 @@ export const Entrevistas: CollectionConfig = {
       },
     },
     {
+      name: 'plataforma',
+      type: 'select',
+      label: 'Plataforma',
+      defaultValue: 'youtube',
+      admin: {
+        position: 'sidebar',
+        description: 'Red social donde está publicada la entrevista.',
+        condition: (data) => data?.estado === 'realizada',
+      },
+      options: [
+        { label: 'YouTube', value: 'youtube' },
+        { label: 'Facebook', value: 'facebook' },
+        { label: 'TikTok', value: 'tiktok' },
+        { label: 'Instagram', value: 'instagram' },
+      ],
+    },
+    {
       name: 'urlVideo',
       type: 'text',
-      label: 'URL del video (YouTube)',
+      label: 'URL del video',
       admin: {
         description:
-          'Pega el enlace de YouTube de la entrevista realizada. Se incrusta automáticamente.',
+          'Pega el enlace de la entrevista. YouTube y TikTok se incrustan; Facebook muestra el reproductor; Instagram muestra un enlace.',
         condition: (data) => data?.estado === 'realizada',
       },
     },

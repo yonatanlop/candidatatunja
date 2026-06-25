@@ -285,7 +285,11 @@ export interface Entrevista {
   medio: string;
   fecha: string;
   /**
-   * Pega el enlace de YouTube de la entrevista realizada. Se incrusta automáticamente.
+   * Red social donde está publicada la entrevista.
+   */
+  plataforma?: ('youtube' | 'facebook' | 'tiktok' | 'instagram') | null;
+  /**
+   * Pega el enlace de la entrevista.
    */
   urlVideo?: string | null;
   /**
@@ -522,6 +526,7 @@ export interface EntrevistasSelect<T extends boolean = true> {
   estado?: T;
   medio?: T;
   fecha?: T;
+  plataforma?: T;
   urlVideo?: T;
   enlaceTransmision?: T;
   descripcion?: T;
