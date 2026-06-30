@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import { PageHeader } from '@/components/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -21,13 +20,11 @@ export default function PlanDeGobiernoPage() {
             Resumen del Plan
           </h2>
           <div className="overflow-hidden rounded-2xl shadow-lg border border-gray-100">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/docs/infografia.png"
               alt="Infografía del Plan de Gobierno de Nohora Cano"
-              width={1200}
-              height={1600}
               className="w-full h-auto"
-              priority
             />
           </div>
         </section>

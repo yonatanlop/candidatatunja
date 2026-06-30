@@ -12,6 +12,7 @@ tests
 playwright-report
 test-results
 *.pdf
+!public/docs/*.pdf
 *.docx
 FotoCandidata.jpeg
 pdf-img

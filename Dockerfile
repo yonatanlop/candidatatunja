@@ -42,6 +42,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/next.config.ts ./next.config.ts
 COPY --from=builder --chown=nextjs:nodejs /app/src ./src
 COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # Carpeta de subidas (media). Se monta como volumen en compose.
 RUN mkdir -p /app/media && chown nextjs:nodejs /app/media
 
