@@ -59,6 +59,7 @@ node_modules/
 
 # Recursos / documentos fuente y artefactos temporales (no van al repo)
 *.pdf
+!public/docs/*.pdf
 *.docx
 /FotoCandidata.jpeg
 /pdf-img/

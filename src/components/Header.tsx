@@ -8,6 +8,7 @@ import { SocialLinks, type Redes } from './SocialLinks'
 const enlaces = [
   { href: '/', texto: 'Inicio' },
   { href: '/hoja-de-vida', texto: 'Hoja de vida' },
+  { href: '/plan-de-gobierno', texto: 'Plan de Gobierno' },
   { href: '/propuestas', texto: 'Propuestas' },
   { href: '/noticias', texto: 'Noticias' },
   { href: '/entrevistas', texto: 'Entrevistas' },
