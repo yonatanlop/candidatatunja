@@ -58,7 +58,6 @@ export default function PlanDeGobiernoPage() {
               <line x1="10" y1="14" x2="21" y2="3" />
             </svg>
           </a>
-          <p className="text-sm text-gray-400">Se abre en una nueva pestaña</p>
         </section>
 
       </div>
