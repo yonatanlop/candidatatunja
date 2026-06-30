@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import { PageHeader } from '@/components/PageHeader'
 
+export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Plan de Gobierno' }
 
 export default function PlanDeGobiernoPage() {
