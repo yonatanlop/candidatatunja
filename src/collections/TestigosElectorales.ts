@@ -11,9 +11,13 @@ export const TestigosElectorales: CollectionConfig = {
       'numeroDocumento',
       'celular',
       'puestoVotacion',
-      'atendido',
+      'contactado',
     ],
     group: 'Campaña',
+    components: {
+      // Botón para descargar el reporte en Excel (CSV) encima de la lista.
+      beforeListTable: ['/components/admin/ExportarTestigos#ExportarTestigos'],
+    },
   },
   access: {
     create: () => true,
@@ -25,7 +29,7 @@ export const TestigosElectorales: CollectionConfig = {
     {
       name: 'nombreCompleto',
       type: 'text',
-      label: 'Nombre completo',
+      label: 'Nombres y apellidos completos',
       required: true,
     },
     {
@@ -61,11 +65,15 @@ export const TestigosElectorales: CollectionConfig = {
       options: PUESTOS_VOTACION,
     },
     {
-      name: 'atendido',
-      type: 'checkbox',
+      name: 'contactado',
+      type: 'select',
       label: 'Contactado por el equipo',
-      defaultValue: false,
+      defaultValue: 'no',
       admin: { position: 'sidebar' },
+      options: [
+        { label: 'Sí', value: 'si' },
+        { label: 'No', value: 'no' },
+      ],
     },
   ],
 }

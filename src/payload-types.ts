@@ -366,7 +366,7 @@ export interface TestigosElectorale {
     | 'inem-carlos-arturo-torres-central'
     | 'ns-leonor-alvarez-pinzon-primaria'
     | 'universidad-juan-de-castellanos';
-  atendido?: boolean | null;
+  contactado?: ('si' | 'no') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -597,7 +597,7 @@ export interface TestigosElectoralesSelect<T extends boolean = true> {
   numeroDocumento?: T;
   celular?: T;
   puestoVotacion?: T;
-  atendido?: T;
+  contactado?: T;
   updatedAt?: T;
   createdAt?: T;
 }

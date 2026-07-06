@@ -23,7 +23,7 @@ export function TestigoForm() {
     <form action={accion} className="space-y-4">
       <div>
         <label htmlFor="nombreCompleto" className="mb-1 block text-sm font-medium">
-          Nombre completo <span className="text-red-500">*</span>
+          Nombres y apellidos completos <span className="text-red-500">*</span>
         </label>
         <input id="nombreCompleto" name="nombreCompleto" required className={inputClass} />
       </div>
