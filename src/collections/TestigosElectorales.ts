@@ -1,11 +1,18 @@
 import type { CollectionConfig } from 'payload'
+import { PUESTOS_VOTACION } from '../lib/puestosVotacion'
 
 export const TestigosElectorales: CollectionConfig = {
   slug: 'testigos-electorales',
   labels: { singular: 'Testigo electoral', plural: 'Testigos electorales' },
   admin: {
     useAsTitle: 'nombreCompleto',
-    defaultColumns: ['nombreCompleto', 'tipoDocumento', 'numeroDocumento', 'celular', 'atendido'],
+    defaultColumns: [
+      'nombreCompleto',
+      'numeroDocumento',
+      'celular',
+      'puestoVotacion',
+      'atendido',
+    ],
     group: 'Campaña',
   },
   access: {
@@ -45,6 +52,13 @@ export const TestigosElectorales: CollectionConfig = {
       type: 'text',
       label: 'Número de celular',
       required: true,
+    },
+    {
+      name: 'puestoVotacion',
+      type: 'select',
+      label: 'Puesto de votación',
+      required: true,
+      options: PUESTOS_VOTACION,
     },
     {
       name: 'atendido',

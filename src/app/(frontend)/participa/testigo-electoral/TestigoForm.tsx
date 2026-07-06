@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react'
 import { registrarTestigo, type EstadoFormulario } from './actions'
+import { PUESTOS_VOTACION } from '@/lib/puestosVotacion'
 
 const estadoInicial: EstadoFormulario | null = null
 const inputClass =
@@ -52,6 +53,22 @@ export function TestigoForm() {
           Número de celular <span className="text-red-500">*</span>
         </label>
         <input id="celular" name="celular" type="tel" required inputMode="tel" className={inputClass} />
+      </div>
+
+      <div>
+        <label htmlFor="puestoVotacion" className="mb-1 block text-sm font-medium">
+          Puesto de votación <span className="text-red-500">*</span>
+        </label>
+        <select id="puestoVotacion" name="puestoVotacion" required defaultValue="" className={inputClass}>
+          <option value="" disabled>
+            Selecciona tu puesto de votación…
+          </option>
+          {PUESTOS_VOTACION.map((p) => (
+            <option key={p.value} value={p.value}>
+              {p.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       {estado && !estado.ok && (

@@ -1,6 +1,7 @@
 'use server'
 
 import { getClient } from '@/lib/payload'
+import { VALORES_PUESTOS } from '@/lib/puestosVotacion'
 
 export type EstadoFormulario = {
   ok: boolean
@@ -18,6 +19,7 @@ export async function registrarTestigo(
   const tipoDocumento = String(formData.get('tipoDocumento') ?? '').trim()
   const numeroDocumento = String(formData.get('numeroDocumento') ?? '').trim()
   const celular = String(formData.get('celular') ?? '').trim()
+  const puestoVotacion = String(formData.get('puestoVotacion') ?? '').trim()
 
   if (nombreCompleto.length < 3) {
     return { ok: false, mensaje: 'Por favor escribe tu nombre completo.' }
@@ -31,6 +33,9 @@ export async function registrarTestigo(
   if (celular.replace(/\D/g, '').length < 7) {
     return { ok: false, mensaje: 'Por favor ingresa un número de celular válido.' }
   }
+  if (!VALORES_PUESTOS.includes(puestoVotacion)) {
+    return { ok: false, mensaje: 'Selecciona tu puesto de votación.' }
+  }
 
   try {
     const payload = await getClient()
@@ -41,6 +46,7 @@ export async function registrarTestigo(
         tipoDocumento: tipoDocumento as 'CC' | 'CE' | 'TI' | 'PA',
         numeroDocumento,
         celular,
+        puestoVotacion: puestoVotacion as never,
       },
     })
     return { ok: true, mensaje: '¡Gracias por sumarte como testigo electoral! Te contactaremos.' }
