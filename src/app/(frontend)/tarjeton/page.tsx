@@ -12,40 +12,34 @@ export default function TarjetonPage() {
         descripcion="Aprende a marcar correctamente tu voto por Nohora Cano el 26 de julio."
       />
 
-      <div className="mx-auto max-w-4xl px-4 py-12 space-y-12">
+      <div className="mx-auto max-w-5xl px-4 py-12">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-start">
 
-        {/* Video */}
-        <section>
-          <h2 className="mb-6 text-center text-2xl font-bold text-[var(--color-marca)]">
-            Video instructivo
-          </h2>
-          <div className="overflow-hidden rounded-2xl shadow-lg bg-black">
-            <video
-              controls
-              className="w-full"
-              preload="metadata"
-            >
-              <source src="/tarjeton/tarjeton.mp4" type="video/mp4" />
-              Tu navegador no soporta la reproducción de video.
-            </video>
+          {/* Video */}
+          <div className="flex flex-col gap-2">
+            <div className="overflow-hidden rounded-2xl shadow-lg bg-black">
+              <video controls className="w-full" preload="metadata">
+                <source src="/tarjeton/tarjeton.mp4" type="video/mp4" />
+                Tu navegador no soporta la reproducción de video.
+              </video>
+            </div>
+            <p className="text-center text-sm text-gray-500">Video instructivo</p>
           </div>
-        </section>
 
-        {/* Imagen */}
-        <section>
-          <h2 className="mb-6 text-center text-2xl font-bold text-[var(--color-marca)]">
-            Así se ve el tarjetón
-          </h2>
-          <div className="overflow-hidden rounded-2xl shadow-lg border border-gray-100">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/tarjeton/tarjeton.jpeg"
-              alt="Imagen del tarjetón electoral con indicación de cómo votar por Nohora Cano"
-              className="w-full h-auto"
-            />
+          {/* Imagen */}
+          <div className="flex flex-col gap-2">
+            <div className="overflow-hidden rounded-2xl shadow-lg border border-gray-100">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/tarjeton/tarjeton.jpeg"
+                alt="Imagen del tarjetón electoral con indicación de cómo votar por Nohora Cano"
+                className="w-full h-auto"
+              />
+            </div>
+            <p className="text-center text-sm text-gray-500">Así se ve el tarjetón</p>
           </div>
-        </section>
 
+        </div>
       </div>
     </>
   )
