@@ -291,7 +291,7 @@ export interface Entrevista {
    */
   plataforma?: ('youtube' | 'facebook' | 'tiktok' | 'instagram') | null;
   /**
-   * Pega el enlace de la entrevista.
+   * Pega el enlace de la entrevista. YouTube y TikTok se incrustan; Facebook muestra el reproductor; Instagram muestra un enlace.
    */
   urlVideo?: string | null;
   /**
@@ -341,7 +341,34 @@ export interface TestigosElectorale {
   tipoDocumento: 'CC' | 'CE' | 'TI' | 'PA';
   numeroDocumento: string;
   celular: string;
-  atendido?: boolean | null;
+  puestoVotacion:
+    | 'casd-barrio-san-antonio'
+    | 'carcel'
+    | 'col-boyaca-jose-ignacio-marquez'
+    | 'col-boyaca-fco-paula-santander'
+    | 'colegio-salesiano-maldonado'
+    | 'coliseo-cubierto-municipal'
+    | 'coliseo-irdet'
+    | 'coliseo-municipal-comfaboy'
+    | 'coliseo-san-antonio'
+    | 'coliseo-uniboyaca'
+    | 'crib'
+    | 'ie-gustavo-rojas-pinilla-central'
+    | 'ie-antonio-jose-sandoval-gomez'
+    | 'ie-libertador-simon-bolivar-central'
+    | 'puente-de-boyaca'
+    | 'puesto-censo-san-agustin'
+    | 'universidad-santo-tomas'
+    | 'auditorio-gustavo-castellanos-comfaboy'
+    | 'ie-silvino-rodriguez-manzanares'
+    | 'it-gonzalo-suarez-rendon-central'
+    | 'ie-libertador-simon-bolivar-san-francisco'
+    | 'ie-normal-superior-jardin-nacional'
+    | 'ies-juan-castellanos-crisanto-luque'
+    | 'inem-carlos-arturo-torres-central'
+    | 'ns-leonor-alvarez-pinzon-primaria'
+    | 'universidad-juan-de-castellanos';
+  contactado?: ('si' | 'no') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -571,7 +598,8 @@ export interface TestigosElectoralesSelect<T extends boolean = true> {
   tipoDocumento?: T;
   numeroDocumento?: T;
   celular?: T;
-  atendido?: T;
+  puestoVotacion?: T;
+  contactado?: T;
   updatedAt?: T;
   createdAt?: T;
 }

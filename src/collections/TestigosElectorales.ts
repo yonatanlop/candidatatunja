@@ -1,12 +1,23 @@
 import type { CollectionConfig } from 'payload'
+import { PUESTOS_VOTACION } from '../lib/puestosVotacion'
 
 export const TestigosElectorales: CollectionConfig = {
   slug: 'testigos-electorales',
   labels: { singular: 'Testigo electoral', plural: 'Testigos electorales' },
   admin: {
     useAsTitle: 'nombreCompleto',
-    defaultColumns: ['nombreCompleto', 'tipoDocumento', 'numeroDocumento', 'celular', 'atendido'],
+    defaultColumns: [
+      'nombreCompleto',
+      'numeroDocumento',
+      'celular',
+      'puestoVotacion',
+      'contactado',
+    ],
     group: 'Campaña',
+    components: {
+      // Botón para descargar el reporte en Excel (CSV) encima de la lista.
+      beforeListTable: ['/components/admin/ExportarTestigos#ExportarTestigos'],
+    },
   },
   access: {
     create: () => true,
@@ -18,7 +29,7 @@ export const TestigosElectorales: CollectionConfig = {
     {
       name: 'nombreCompleto',
       type: 'text',
-      label: 'Nombre completo',
+      label: 'Nombres y apellidos completos',
       required: true,
     },
     {
@@ -47,11 +58,22 @@ export const TestigosElectorales: CollectionConfig = {
       required: true,
     },
     {
-      name: 'atendido',
-      type: 'checkbox',
+      name: 'puestoVotacion',
+      type: 'select',
+      label: 'Puesto de votación',
+      required: true,
+      options: PUESTOS_VOTACION,
+    },
+    {
+      name: 'contactado',
+      type: 'select',
       label: 'Contactado por el equipo',
-      defaultValue: false,
+      defaultValue: 'no',
       admin: { position: 'sidebar' },
+      options: [
+        { label: 'Sí', value: 'si' },
+        { label: 'No', value: 'no' },
+      ],
     },
   ],
 }
