@@ -5,6 +5,7 @@ import { getClient } from '@/lib/payload'
 import { mediaUrl } from '@/lib/media'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { VisitaTracker } from '@/components/VisitaTracker'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
@@ -31,6 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="es">
       <body className="flex min-h-screen flex-col antialiased">
+        <VisitaTracker />
         <Header nombreSitio={nombreSitio} logoUrl={logoUrl} redes={redes} />
         <main className="flex-1">{children}</main>
         <Footer

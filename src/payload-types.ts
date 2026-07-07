@@ -104,10 +104,12 @@ export interface Config {
   globals: {
     'hoja-de-vida': HojaDeVida;
     'ajustes-sitio': AjustesSitio;
+    'estadisticas': Estadisticas;
   };
   globalsSelect: {
     'hoja-de-vida': HojaDeVidaSelect<false> | HojaDeVidaSelect<true>;
     'ajustes-sitio': AjustesSitioSelect<false> | AjustesSitioSelect<true>;
+    'estadisticas': EstadisticasSelect<false> | EstadisticasSelect<true>;
   };
   locale: null;
   widgets: {
@@ -810,6 +812,26 @@ export interface HojaDeVidaSelect<T extends boolean = true> {
         texto?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "estadisticas".
+ */
+export interface Estadisticas {
+  id: number;
+  totalVisitas?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "estadisticas_select".
+ */
+export interface EstadisticasSelect<T extends boolean = true> {
+  totalVisitas?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

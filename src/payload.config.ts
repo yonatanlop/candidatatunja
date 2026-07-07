@@ -17,6 +17,7 @@ import { TestigosElectorales } from './collections/TestigosElectorales'
 import { Reuniones } from './collections/Reuniones'
 import { HojaDeVida } from './globals/HojaDeVida'
 import { AjustesSitio } from './globals/AjustesSitio'
+import { Estadisticas } from './globals/Estadisticas'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -42,7 +43,7 @@ export default buildConfig({
     Media,
     Users,
   ],
-  globals: [HojaDeVida, AjustesSitio],
+  globals: [HojaDeVida, AjustesSitio, Estadisticas],
   editor: lexicalEditor(),
   i18n: {
     supportedLanguages: { es },
