@@ -1,6 +1,7 @@
 'use server'
 
 import { getClient } from '@/lib/payload'
+import { esBot, obtenerIp, permitir } from '@/lib/seguridad'
 
 export type EstadoFormulario = {
   ok: boolean
@@ -12,6 +13,13 @@ export async function enviarSugerencia(
   _prev: EstadoFormulario | null,
   formData: FormData,
 ): Promise<EstadoFormulario> {
+  if (esBot(formData)) {
+    return { ok: true, mensaje: '¡Gracias! Tu sugerencia fue recibida.' }
+  }
+  if (!permitir(`buzon:${await obtenerIp()}`)) {
+    return { ok: false, mensaje: 'Has enviado demasiadas sugerencias. Espera un momento e inténtalo de nuevo.' }
+  }
+
   const sugerencia = String(formData.get('sugerencia') ?? '').trim()
   const nombre = String(formData.get('nombre') ?? '').trim()
   const email = String(formData.get('email') ?? '').trim()

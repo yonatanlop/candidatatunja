@@ -3,6 +3,7 @@
 import { useActionState } from 'react'
 import { registrarTestigo, type EstadoFormulario } from './actions'
 import { PUESTOS_VOTACION } from '@/lib/puestosVotacion'
+import { HoneypotField } from '@/components/HoneypotField'
 
 const estadoInicial: EstadoFormulario | null = null
 const inputClass =
@@ -21,6 +22,7 @@ export function TestigoForm() {
 
   return (
     <form action={accion} className="space-y-4">
+      <HoneypotField />
       <div>
         <label htmlFor="nombreCompleto" className="mb-1 block text-sm font-medium">
           Nombres y apellidos completos <span className="text-red-500">*</span>

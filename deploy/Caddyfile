@@ -14,5 +14,14 @@ http://137.131.216.216 {
 # --- Dominio definitivo de la campaña (HTTPS automático con Let's Encrypt) ---
 # Activo desde 2026-06-24. Caddy emite y renueva el certificado TLS solo.
 recuperemosatunja.com, www.recuperemosatunja.com {
+	# Cabeceras de seguridad (anti clickjacking, sniffing y downgrade a HTTP).
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "geolocation=(), microphone=(), camera=()"
+		-Server
+	}
 	reverse_proxy localhost:8081
 }

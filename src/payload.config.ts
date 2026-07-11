@@ -22,7 +22,17 @@ import { Estadisticas } from './globals/Estadisticas'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+// Orígenes permitidos para CORS/CSRF: el dominio y su variante con www.
+const origenesPermitidos = Array.from(
+  new Set([siteUrl, siteUrl.replace('://', '://www.')]),
+)
+
 export default buildConfig({
+  serverURL: siteUrl,
+  // Restringe qué orígenes pueden llamar a la API y hacer peticiones autenticadas.
+  cors: origenesPermitidos,
+  csrf: origenesPermitidos,
   admin: {
     user: Users.slug,
     importMap: {

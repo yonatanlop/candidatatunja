@@ -7,7 +7,11 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
     group: 'Campaña',
   },
-  auth: true,
+  auth: {
+    // Bloqueo tras 5 intentos fallidos durante 10 minutos (anti fuerza bruta).
+    maxLoginAttempts: 5,
+    lockTime: 10 * 60 * 1000,
+  },
   fields: [
     {
       name: 'nombre',

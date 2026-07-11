@@ -1,6 +1,7 @@
 'use server'
 
 import { getClient } from '@/lib/payload'
+import { esBot, obtenerIp, permitir } from '@/lib/seguridad'
 
 export type EstadoFormulario = {
   ok: boolean
@@ -14,6 +15,15 @@ export async function enviarContacto(
   _prev: EstadoFormulario | null,
   formData: FormData,
 ): Promise<EstadoFormulario> {
+  // Anti-bot: si el honeypot viene lleno, fingimos éxito sin guardar nada.
+  if (esBot(formData)) {
+    return { ok: true, mensaje: '¡Gracias por escribirnos! Hemos recibido tu mensaje.' }
+  }
+  // Límite por IP para frenar flooding.
+  if (!permitir(`contacto:${await obtenerIp()}`)) {
+    return { ok: false, mensaje: 'Has enviado demasiados mensajes. Espera un momento e inténtalo de nuevo.' }
+  }
+
   const nombre = String(formData.get('nombre') ?? '').trim()
   const email = String(formData.get('email') ?? '').trim()
   const telefono = String(formData.get('telefono') ?? '').trim()

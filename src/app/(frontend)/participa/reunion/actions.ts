@@ -1,6 +1,7 @@
 'use server'
 
 import { getClient } from '@/lib/payload'
+import { esBot, obtenerIp, permitir } from '@/lib/seguridad'
 
 export type EstadoFormulario = {
   ok: boolean
@@ -18,6 +19,13 @@ export async function solicitarReunion(
   _prev: EstadoFormulario | null,
   formData: FormData,
 ): Promise<EstadoFormulario> {
+  if (esBot(formData)) {
+    return { ok: true, mensaje: '¡Solicitud enviada! El equipo confirmará la reunión contigo.' }
+  }
+  if (!permitir(`reunion:${await obtenerIp()}`)) {
+    return { ok: false, mensaje: 'Has enviado demasiadas solicitudes. Espera un momento e inténtalo de nuevo.' }
+  }
+
   const nombre = String(formData.get('nombre') ?? '').trim()
   const lugar = String(formData.get('lugar') ?? '').trim()
   const fechaHoraRaw = String(formData.get('fechaHora') ?? '').trim()

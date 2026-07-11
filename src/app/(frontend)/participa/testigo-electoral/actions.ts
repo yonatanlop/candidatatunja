@@ -2,6 +2,7 @@
 
 import { getClient } from '@/lib/payload'
 import { VALORES_PUESTOS } from '@/lib/puestosVotacion'
+import { esBot, obtenerIp, permitir } from '@/lib/seguridad'
 
 export type EstadoFormulario = {
   ok: boolean
@@ -15,6 +16,13 @@ export async function registrarTestigo(
   _prev: EstadoFormulario | null,
   formData: FormData,
 ): Promise<EstadoFormulario> {
+  if (esBot(formData)) {
+    return { ok: true, mensaje: '¡Gracias por sumarte como testigo electoral! Te contactaremos.' }
+  }
+  if (!permitir(`testigo:${await obtenerIp()}`)) {
+    return { ok: false, mensaje: 'Has enviado demasiadas solicitudes. Espera un momento e inténtalo de nuevo.' }
+  }
+
   const nombreCompleto = String(formData.get('nombreCompleto') ?? '').trim()
   const tipoDocumento = String(formData.get('tipoDocumento') ?? '').trim()
   const numeroDocumento = String(formData.get('numeroDocumento') ?? '').trim()

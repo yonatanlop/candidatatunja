@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react'
 import { solicitarReunion, type EstadoFormulario } from './actions'
+import { HoneypotField } from '@/components/HoneypotField'
 
 const estadoInicial: EstadoFormulario | null = null
 const inputClass =
@@ -20,6 +21,7 @@ export function ReunionForm() {
 
   return (
     <form action={accion} className="space-y-4">
+      <HoneypotField />
       <div>
         <label htmlFor="nombre" className="mb-1 block text-sm font-medium">
           Nombre <span className="text-red-500">*</span>

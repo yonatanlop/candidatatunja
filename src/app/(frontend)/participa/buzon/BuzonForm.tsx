@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react'
 import { enviarSugerencia, type EstadoFormulario } from './actions'
+import { HoneypotField } from '@/components/HoneypotField'
 
 const estadoInicial: EstadoFormulario | null = null
 const inputClass =
@@ -20,6 +21,7 @@ export function BuzonForm() {
 
   return (
     <form action={accion} className="space-y-4">
+      <HoneypotField />
       <div>
         <label htmlFor="sugerencia" className="mb-1 block text-sm font-medium">
           Tu sugerencia <span className="text-red-500">*</span>
