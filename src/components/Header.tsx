@@ -7,13 +7,13 @@ import { SocialLinks, type Redes } from './SocialLinks'
 
 const enlaces = [
   { href: '/', texto: 'Inicio' },
+  { href: '/tarjeton', texto: '¡Aprende a votar!', destacado: true },
   { href: '/hoja-de-vida', texto: 'Hoja de vida' },
   { href: '/plan-de-gobierno', texto: 'Plan de Gobierno' },
   { href: '/propuestas', texto: 'Propuestas' },
   { href: '/noticias', texto: 'Noticias' },
   { href: '/entrevistas', texto: 'Entrevistas' },
   { href: '/participa', texto: 'Participa' },
-  { href: '/tarjeton', texto: 'Cómo marcar en el tarjetón', destacado: true },
 ]
 
 export function Header({
@@ -53,7 +53,7 @@ export function Header({
               href={e.href}
               className={`text-sm font-medium transition-colors ${
                 e.destacado
-                  ? 'font-bold text-[var(--color-acento)] hover:text-[var(--color-acento)]/80'
+                  ? 'rounded-full bg-[var(--color-acento)] px-4 py-1.5 font-bold text-white shadow-sm hover:brightness-110'
                   : esActivo(e.href)
                   ? 'text-[var(--color-marca)]'
                   : 'text-gray-700 hover:text-[var(--color-marca)]'
@@ -97,7 +97,7 @@ export function Header({
                   onClick={() => setAbierto(false)}
                   className={`block rounded px-2 py-2 text-base font-medium ${
                     e.destacado
-                      ? 'font-bold text-[var(--color-acento)]'
+                      ? 'rounded-full bg-[var(--color-acento)] px-4 font-bold text-white text-center'
                       : esActivo(e.href)
                       ? 'bg-[var(--color-marca-claro)] text-[var(--color-marca)]'
                       : 'text-gray-700'
