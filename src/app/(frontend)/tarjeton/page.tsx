@@ -13,6 +13,21 @@ export default function TarjetonPage() {
       />
 
       <div className="mx-auto max-w-5xl px-4 py-12">
+
+        {/* Simulador externo */}
+        <div className="mb-10 rounded-2xl border border-[var(--color-acento)]/30 bg-[var(--color-acento)]/5 px-6 py-8 text-center">
+          <p className="mb-1 text-lg font-bold text-[var(--color-marca)]">¿Quieres practicar antes del 26 de julio?</p>
+          <p className="mb-6 text-gray-600">Usa el simulador interactivo del Partido MIRA y ensaya cómo marcar tu tarjetón.</p>
+          <a
+            href="https://partidomira.com/tunja/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-full bg-[var(--color-acento)] px-8 py-3 font-bold text-white shadow-md transition-all hover:brightness-110 hover:shadow-lg"
+          >
+            Ir al simulador de voto
+          </a>
+        </div>
+
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-start">
 
           {/* Video */}
@@ -41,19 +56,6 @@ export default function TarjetonPage() {
 
         </div>
 
-        {/* Simulador externo */}
-        <div className="mt-10 rounded-2xl border border-[var(--color-acento)]/30 bg-[var(--color-acento)]/5 px-6 py-8 text-center">
-          <p className="mb-1 text-lg font-bold text-[var(--color-marca)]">¿Quieres practicar antes del 26 de julio?</p>
-          <p className="mb-6 text-gray-600">Usa el simulador interactivo del Partido MIRA y ensaya cómo marcar tu tarjetón.</p>
-          <a
-            href="https://partidomira.com/tunja/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block rounded-full bg-[var(--color-acento)] px-8 py-3 font-bold text-white shadow-md transition-all hover:brightness-110 hover:shadow-lg"
-          >
-            Ir al simulador de voto
-          </a>
-        </div>
       </div>
     </>
   )
