@@ -8,6 +8,7 @@ import { SocialLinks, type Redes } from './SocialLinks'
 const enlaces = [
   { href: '/', texto: 'Inicio' },
   { href: '/tarjeton', texto: '¡Aprende a votar!', destacado: true },
+  { href: 'https://partidomira.com/tunja/', texto: 'Simulador de voto', externo: true },
   { href: '/hoja-de-vida', texto: 'Hoja de vida' },
   { href: '/plan-de-gobierno', texto: 'Plan de Gobierno' },
   { href: '/propuestas', texto: 'Propuestas' },
@@ -47,21 +48,33 @@ export function Header({
 
         {/* Navegación de escritorio */}
         <nav className="hidden items-center gap-6 md:flex">
-          {enlaces.map((e) => (
-            <Link
-              key={e.href}
-              href={e.href}
-              className={`text-sm font-medium transition-colors ${
-                e.destacado
-                  ? 'rounded-full bg-[var(--color-acento)] px-4 py-1.5 font-bold text-white shadow-sm hover:brightness-110'
-                  : esActivo(e.href)
-                  ? 'text-[var(--color-marca)]'
-                  : 'text-gray-700 hover:text-[var(--color-marca)]'
-              }`}
-            >
-              {e.texto}
-            </Link>
-          ))}
+          {enlaces.map((e) =>
+            e.externo ? (
+              <a
+                key={e.href}
+                href={e.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border-2 border-[var(--color-acento)] px-4 py-1 text-sm font-bold text-[var(--color-acento)] transition-colors hover:bg-[var(--color-acento)] hover:text-white"
+              >
+                {e.texto}
+              </a>
+            ) : (
+              <Link
+                key={e.href}
+                href={e.href}
+                className={`text-sm font-medium transition-colors ${
+                  e.destacado
+                    ? 'rounded-full bg-[var(--color-acento)] px-4 py-1.5 font-bold text-white shadow-sm hover:brightness-110'
+                    : esActivo(e.href)
+                    ? 'text-[var(--color-marca)]'
+                    : 'text-gray-700 hover:text-[var(--color-marca)]'
+                }`}
+              >
+                {e.texto}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="hidden md:block">
@@ -92,19 +105,31 @@ export function Header({
           <ul className="flex flex-col gap-1">
             {enlaces.map((e) => (
               <li key={e.href}>
-                <Link
-                  href={e.href}
-                  onClick={() => setAbierto(false)}
-                  className={`block rounded px-2 py-2 text-base font-medium ${
-                    e.destacado
-                      ? 'rounded-full bg-[var(--color-acento)] px-4 font-bold text-white text-center'
-                      : esActivo(e.href)
-                      ? 'bg-[var(--color-marca-claro)] text-[var(--color-marca)]'
-                      : 'text-gray-700'
-                  }`}
-                >
-                  {e.texto}
-                </Link>
+                {e.externo ? (
+                  <a
+                    href={e.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setAbierto(false)}
+                    className="block rounded-full border-2 border-[var(--color-acento)] px-4 py-2 text-center text-base font-bold text-[var(--color-acento)]"
+                  >
+                    {e.texto}
+                  </a>
+                ) : (
+                  <Link
+                    href={e.href}
+                    onClick={() => setAbierto(false)}
+                    className={`block rounded px-2 py-2 text-base font-medium ${
+                      e.destacado
+                        ? 'rounded-full bg-[var(--color-acento)] px-4 font-bold text-white text-center'
+                        : esActivo(e.href)
+                        ? 'bg-[var(--color-marca-claro)] text-[var(--color-marca)]'
+                        : 'text-gray-700'
+                    }`}
+                  >
+                    {e.texto}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
